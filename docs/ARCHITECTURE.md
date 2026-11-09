@@ -98,6 +98,9 @@
 - 两者都用绝对时间判定边沿，不依赖 tracker 的一次性脉冲字段。
 - 摄像头权限请求必须有超时兜底，否则权限弹窗无人应答时界面永久卡在请求态。
 - MediaPipe 的 WASM 与模型走本地文件，运行时不联网。
+- 只保留 `vision_wasm_internal.{js,wasm}` 一份 WASM：
+  `FilesetResolver.forVisionTasks(path, useModule = false)` 的第二参数决定拼哪个变体，
+  本项目不传，故 `*_module_internal.*` 永不加载，回退方案里可不再保留。
 
 ## 九、防错清单
 

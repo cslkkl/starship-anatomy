@@ -10,6 +10,7 @@
 [![WebGL2](https://img.shields.io/badge/WebGL2-no--build-2ea44f?style=for-the-badge)](#技术栈)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-HandLandmarker-0097A7?style=for-the-badge)](https://ai.google.dev/edge/mediapipe/solutions/vision/hand_landmarker)
 [![Offline](https://img.shields.io/badge/runtime-100%25%20offline-orange?style=for-the-badge)](#隐私与离线)
+[![License](https://img.shields.io/badge/license-MIT-3da639?style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -161,7 +162,7 @@ starship-anatomy/
 
 ## 第三方与许可
 
-本仓库代码为个人项目，**未附开源许可**（保留所有权利）。
+本仓库代码基于 [MIT License](LICENSE) 开源，可自由使用、修改与分发。
 
 `vendor/` 与 `models/` 内含 three.js（MIT）与 MediaPipe（Apache-2.0）资源，
 版权归各自上游项目，详见 [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)。

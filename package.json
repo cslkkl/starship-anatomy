@@ -2,7 +2,7 @@
   "name": "starship-anatomy",
   "version": "1.0.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "description": "ARGUS-IX 深空战术巡洋舰 · 可剖析的 3D 宇宙飞船展示页（纯前端、程序化建模、零构建）",
   "type": "module",
   "scripts": {

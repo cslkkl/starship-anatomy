@@ -59,7 +59,6 @@ python C:\Users\11965\.agents\skills\maintenance-flow\check-line-endings.py .
 - [ ] 无自动化测试，验收全靠手动清单
 - [ ] `main.js` 约 900 行、`ship.js` 约 1300 行，超出单文件合适规模
 - [ ] 未配 ESLint / Prettier / pre-commit / CI
-- [ ] 仓库未声明开源许可（当前 `UNLICENSED`），需维护者决定
 
 ## 活跃坑
 

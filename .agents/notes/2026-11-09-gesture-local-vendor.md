@@ -24,6 +24,8 @@ MediaPipe 官方推荐从 CDN 加载 WASM 与模型，但那会让页面在离�
 ## 影响
 
 - 收益：离线可用，与 three 一样走本地 vendor，仓库自包含。
-- 代价：仓库体积增加约 36 MB（两份 WASM 各约 14 MB + 模型 7.5 MB）。
+- 代价：仓库体积增加约 22 MB（WASM 约 14 MB + 模型 7.5 MB）。
+- 只保留 `vision_wasm_internal.*` 一份 WASM：`FilesetResolver.forVisionTasks` 的第二参数默认 `false`，
+  只会拼出非 module 变体，`*_module_internal.*` 在本项目中永不被加载，已移除。
 - 移除方式：删 `vendor/vision/`、`models/`、`js/hands.js`、`js/gesture.js`
   以及 `index.html` 的手势区块，其余功能不受影响。
