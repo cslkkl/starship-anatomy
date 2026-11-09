@@ -1,0 +1,15 @@
+# 依赖（仅重新 vendor three 时需要）
+node_modules/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.idea/
+.vscode/
+
+# 临时产物
+*.tmp
+*.log
+_tmp/

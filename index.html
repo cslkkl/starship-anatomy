@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>ARGUS-IX · 深空战术巡洋舰 · 结构剖析</title>
+<link rel="stylesheet" href="./css/style.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/core": "./vendor/three.core.js",
+    "three/addons/": "./vendor/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+
+  <!-- ===== 顶部状态条 ===== -->
+  <header id="hud-top">
+    <div class="hud-left">
+      <div class="sigil" aria-hidden="true">
+        <svg viewBox="0 0 40 40"><path d="M20 2 36 11v18L20 38 4 29V11z"/><path class="in" d="M20 8 30 14v12l-10 6-10-6V14z"/></svg>
+      </div>
+      <div class="titles">
+        <h1>ARGUS<span>·</span>IX</h1>
+        <p id="shipClass">重型深空战术巡洋舰 · 结构剖析台</p>
+      </div>
+    </div>
+    <div class="hud-center">
+      <div class="readout">
+        <span class="k">零部件</span><span class="v" id="statParts">—</span>
+      </div>
+      <div class="readout">
+        <span class="k">已剖析</span><span class="v" id="statInspected">—</span>
+      </div>
+      <div class="readout">
+        <span class="k">帧率</span><span class="v" id="statFps">—</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== 左侧：一键剖析主控 ===== -->
+  <aside id="panel-left">
+    <button id="drawerToggle" class="drawer-toggle" aria-expanded="false">展开</button>
+    <section class="block">
+      <h2 class="kicker">剖析主控</h2>
+      <button id="btnExplode" class="hero-btn">
+        <span class="ico" aria-hidden="true"></span>
+        <span class="label">一键剖析</span>
+        <span class="hint">结构展开与零件检视</span>
+      </button>
+      <div class="slider-row">
+        <label for="explodeRange">展开系数</label>
+        <output id="explodeVal">0%</output>
+      </div>
+      <input id="explodeRange" type="range" min="0" max="100" value="0" step="1" />
+      <div class="btn-row">
+        <button id="btnStepOut" class="mini" title="逐级展开 (E)">逐级 ▸</button>
+        <button id="btnReset" class="mini" title="复位 (R)">复位</button>
+      </div>
+    </section>
+
+    <section class="block">
+      <h2 class="kicker">系统 · 零部件</h2>
+      <ul id="partList" class="part-list"></ul>
+    </section>
+
+    <section class="block">
+      <h2 class="kicker">手势控制</h2>
+      <button id="btnGesture" class="gesture-btn">
+        <span class="gdot"></span>
+        <span class="glabel">开启手势</span>
+      </button>
+      <div class="gesture-status" id="gestureStatus">摄像头未开启</div>
+      <div class="gesture-preview" id="gesturePreview" hidden>
+        <canvas id="gestureCanvas" width="240" height="180"></canvas>
+        <div class="gesture-hud" id="gestureHud">待识别</div>
+      </div>
+      <ul class="gesture-legend">
+        <li><b>食指</b> 指哪打哪 · 悬停高亮</li>
+        <li><b>捏合</b> 点选部件，按住拖动旋转</li>
+        <li><b>握拳</b> 保持半秒，一键剖析</li>
+        <li><b>张掌</b> 推近镜头</li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h2 class="kicker">渲染</h2>
+      <div class="toggle-row">
+        <button class="toggle" data-opt="glow" aria-pressed="true">拖尾尾焰</button>
+        <button class="toggle" data-opt="laser" aria-pressed="false">激光武器</button>
+      </div>
+      <div class="toggle-row">
+        <button class="toggle" data-opt="labels" aria-pressed="true">引线标签</button>
+        <button class="toggle" data-opt="grid" aria-pressed="false">技术网格</button>
+      </div>
+      <div class="toggle-row">
+        <button class="toggle" data-opt="autoRotate" aria-pressed="false">自动巡航</button>
+        <button class="toggle" data-opt="xray" aria-pressed="false">X 光透视</button>
+      </div>
+      <div class="toggle-row">
+        <button class="toggle" data-opt="ao" aria-pressed="true">环境遮蔽</button>
+        <button id="btnShot" class="toggle shot" title="导出 PNG（P）">导出截图</button>
+      </div>
+    </section>
+  </aside>
+
+  <!-- ===== 右侧：零件检视卡 ===== -->
+  <aside id="panel-right" class="collapsed">
+    <button id="inspectClose" class="close-x" aria-label="关闭">✕</button>
+    <div class="inspect-eyebrow" id="inspectCode">SYS-00</div>
+    <h2 id="inspectName">未选择部件</h2>
+    <p id="inspectDesc" class="inspect-desc">点击任意部件或左侧列表，即可一键剖析该零件。</p>
+    <dl class="specs" id="inspectSpecs"></dl>
+    <div class="inspect-actions">
+      <button id="btnIsolate" class="mini wide">单独剖析该件</button>
+      <button id="btnFocus" class="mini wide">聚焦</button>
+    </div>
+  </aside>
+
+  <!-- ===== 底部：镜头 ===== -->
+  <footer id="hud-bottom">
+    <div class="hintbar">
+      <span><b>拖拽</b> 旋转</span>
+      <span><b>滚轮</b> 推拉</span>
+      <span><b>点击部件</b> 剖析</span>
+      <span><b>空格</b> 一键剖析</span>
+    </div>
+    <div class="cams">
+      <button class="cam" data-view="hero">全景</button>
+      <button class="cam" data-view="side">侧视</button>
+      <button class="cam" data-view="front">舰首</button>
+      <button class="cam" data-view="rear">尾焰</button>
+      <button class="cam" data-view="top">俯视</button>
+    </div>
+  </footer>
+
+  <!-- ===== 引线标签层 ===== -->
+  <div id="labelLayer" aria-hidden="true"></div>
+
+  <!-- ===== 手势准星 ===== -->
+  <div id="gestureCursor" aria-hidden="true">
+    <svg viewBox="0 0 40 40">
+      <circle cx="20" cy="20" r="11" />
+      <path d="M20 2v7M20 31v7M2 20h7M31 20h7" />
+    </svg>
+    <span class="gc-label"></span>
+  </div>
+
+  <!-- ===== 启动遮罩 ===== -->
+  <div id="boot">
+    <div class="boot-inner">
+      <div class="boot-ship">
+        <svg viewBox="0 0 120 40"><path d="M4 20h74l14-9 12 4-6 5h10l8 5-8 5h-10l6 5-12 4-14-9H4z"/></svg>
+      </div>
+      <div class="boot-bar"><i></i></div>
+      <p>正在装配 ARGUS-IX 结构数据…</p>
+    </div>
+  </div>
+</div>
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

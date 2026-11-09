@@ -1,0 +1,13 @@
+# 统一行尾，避免 Windows 与 CI 之间的 diff 噪音
+* text=auto eol=lf
+
+# 二进制资源，不做文本转换
+*.wasm binary
+*.task binary
+*.png binary
+*.jpg binary
+*.ico binary
+
+# Windows 脚本保留 CRLF
+*.ps1 text eol=crlf
+*.bat text eol=crlf
