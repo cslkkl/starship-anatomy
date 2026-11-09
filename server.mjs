@@ -15,6 +15,9 @@ const types = {
   ".jpg": "image/jpeg",
   ".svg": "image/svg+xml",
   ".ico": "image/x-icon",
+  // MediaPipe 需要正确的 wasm MIME 才能走流式编译
+  ".wasm": "application/wasm",
+  ".task": "application/octet-stream",
 };
 
 http
