@@ -7,6 +7,7 @@
 - 架构设计与防错清单 → [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
 - 模块索引与变更路由 → [js/README.md](js/README.md)
 - 决策与依据 → [.agents/notes/](.agents/notes/)
+- 第三方许可 → [THIRD-PARTY-NOTICES.md](THIRD-PARTY-NOTICES.md)
 - 用户视角的用法 → [README.md](README.md)
 
 ## 全局规则
@@ -22,6 +23,7 @@
 ## 常用命令
 
 - 开发预览：`node server.mjs 4173` → http://127.0.0.1:4173/
+- 远程仓库：https://github.com/cslkkl/starship-anatomy
 - 重新 vendor three：从 `node_modules/three` 拷贝内核与用到的 addons 到 `vendor/`
 - 文档链接校验：
 
@@ -49,15 +51,15 @@ python C:\Users\11965\.agents\skills\maintenance-flow\check-line-endings.py .
 - 控制台 0 错误 0 警告（干净加载）。
 - 已手动验收：剖析、逐级、复位、检视、单件剖析、聚焦、X 光、激光、GTAO、
   5 个机位、截图导出、移动端抽屉、手势四姿态与关闭清场。
+- 文档校验：链接 0 错误 0 警告，行尾 0 不一致。
 - 手势的真实识别效果未经真人验证（开发环境无可用摄像头）。
 
 ## 待办
 
-- [ ] 项目未纳入 git，提交拆分 / 钩子 / CI 全部无法落地
 - [ ] 无自动化测试，验收全靠手动清单
 - [ ] `main.js` 约 900 行、`ship.js` 约 1300 行，超出单文件合适规模
 - [ ] 未配 ESLint / Prettier / pre-commit / CI
-- [ ] 缺 `.node-version` 之外的工具链版本声明（npm / three 已由锁文件覆盖）
+- [ ] 仓库未声明开源许可（当前 `UNLICENSED`），需维护者决定
 
 ## 活跃坑
 
